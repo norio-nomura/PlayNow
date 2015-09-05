@@ -1,0 +1,292 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6C690A471B9AA23B00BB3313 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A461B9AA23B00BB3313 /* AppDelegate.swift */; };
+		6C690A491B9AA23B00BB3313 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C690A481B9AA23B00BB3313 /* Assets.xcassets */; };
+		6C690A4C1B9AA23B00BB3313 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C690A4A1B9AA23B00BB3313 /* MainMenu.xib */; };
+		6C690A561B9AA3DF00BB3313 /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A551B9AA3DF00BB3313 /* Playground.swift */; settings = {ASSET_TAGS = (); }; };
+		6C690A581B9AA42A00BB3313 /* NSDate+PlayNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A571B9AA42A00BB3313 /* NSDate+PlayNow.swift */; settings = {ASSET_TAGS = (); }; };
+		6C690A5A1B9AA44E00BB3313 /* NSURL+PlayNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A591B9AA44E00BB3313 /* NSURL+PlayNow.swift */; settings = {ASSET_TAGS = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		6C690A431B9AA23B00BB3313 /* PlayNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C690A461B9AA23B00BB3313 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6C690A481B9AA23B00BB3313 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6C690A4B1B9AA23B00BB3313 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		6C690A4D1B9AA23B00BB3313 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6C690A531B9AA27200BB3313 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		6C690A541B9AA27200BB3313 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		6C690A551B9AA3DF00BB3313 /* Playground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
+		6C690A571B9AA42A00BB3313 /* NSDate+PlayNow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+PlayNow.swift"; sourceTree = "<group>"; };
+		6C690A591B9AA44E00BB3313 /* NSURL+PlayNow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+PlayNow.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6C690A401B9AA23B00BB3313 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6C690A3A1B9AA23B00BB3313 = {
+			isa = PBXGroup;
+			children = (
+				6C690A531B9AA27200BB3313 /* README.md */,
+				6C690A541B9AA27200BB3313 /* LICENSE */,
+				6C690A451B9AA23B00BB3313 /* PlayNow */,
+				6C690A441B9AA23B00BB3313 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6C690A441B9AA23B00BB3313 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6C690A431B9AA23B00BB3313 /* PlayNow.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6C690A451B9AA23B00BB3313 /* PlayNow */ = {
+			isa = PBXGroup;
+			children = (
+				6C690A461B9AA23B00BB3313 /* AppDelegate.swift */,
+				6C690A481B9AA23B00BB3313 /* Assets.xcassets */,
+				6C690A4A1B9AA23B00BB3313 /* MainMenu.xib */,
+				6C690A4D1B9AA23B00BB3313 /* Info.plist */,
+				6C690A571B9AA42A00BB3313 /* NSDate+PlayNow.swift */,
+				6C690A591B9AA44E00BB3313 /* NSURL+PlayNow.swift */,
+				6C690A551B9AA3DF00BB3313 /* Playground.swift */,
+			);
+			path = PlayNow;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6C690A421B9AA23B00BB3313 /* PlayNow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6C690A501B9AA23B00BB3313 /* Build configuration list for PBXNativeTarget "PlayNow" */;
+			buildPhases = (
+				6C690A3F1B9AA23B00BB3313 /* Sources */,
+				6C690A401B9AA23B00BB3313 /* Frameworks */,
+				6C690A411B9AA23B00BB3313 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PlayNow;
+			productName = PlayNow;
+			productReference = 6C690A431B9AA23B00BB3313 /* PlayNow.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6C690A3B1B9AA23B00BB3313 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Norio Nomura";
+				TargetAttributes = {
+					6C690A421B9AA23B00BB3313 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
+			};
+			buildConfigurationList = 6C690A3E1B9AA23B00BB3313 /* Build configuration list for PBXProject "PlayNow" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6C690A3A1B9AA23B00BB3313;
+			productRefGroup = 6C690A441B9AA23B00BB3313 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6C690A421B9AA23B00BB3313 /* PlayNow */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6C690A411B9AA23B00BB3313 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C690A491B9AA23B00BB3313 /* Assets.xcassets in Resources */,
+				6C690A4C1B9AA23B00BB3313 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6C690A3F1B9AA23B00BB3313 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C690A581B9AA42A00BB3313 /* NSDate+PlayNow.swift in Sources */,
+				6C690A561B9AA3DF00BB3313 /* Playground.swift in Sources */,
+				6C690A471B9AA23B00BB3313 /* AppDelegate.swift in Sources */,
+				6C690A5A1B9AA44E00BB3313 /* NSURL+PlayNow.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		6C690A4A1B9AA23B00BB3313 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6C690A4B1B9AA23B00BB3313 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6C690A4E1B9AA23B00BB3313 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6C690A4F1B9AA23B00BB3313 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		6C690A511B9AA23B00BB3313 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PlayNow/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.norio-nomura.PlayNow";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6C690A521B9AA23B00BB3313 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PlayNow/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.norio-nomura.PlayNow";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6C690A3E1B9AA23B00BB3313 /* Build configuration list for PBXProject "PlayNow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C690A4E1B9AA23B00BB3313 /* Debug */,
+				6C690A4F1B9AA23B00BB3313 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6C690A501B9AA23B00BB3313 /* Build configuration list for PBXNativeTarget "PlayNow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C690A511B9AA23B00BB3313 /* Debug */,
+				6C690A521B9AA23B00BB3313 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6C690A3B1B9AA23B00BB3313 /* Project object */;
+}
