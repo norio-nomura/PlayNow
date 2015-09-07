@@ -137,15 +137,15 @@ struct Playground {
     /// If between creation and modification is less than 2 seconds, it is regarded unused.
     func unusedPages() throws -> [NSURL] {
         let fm = NSFileManager.defaultManager()
-        let properties = [NSURLCreationDateKey, NSURLContentModificationDateKey]
+        let keys = [NSURLCreationDateKey, NSURLContentModificationDateKey]
         let urls = try fm.contentsOfDirectoryAtURL(pagesURL,
-            includingPropertiesForKeys: properties,
+            includingPropertiesForKeys: keys,
             options: [.SkipsSubdirectoryDescendants, .SkipsHiddenFiles])
             .filter { $0.pathExtension == Playground.pagePathExtension }
             .filter {
-                if let info = try? $0.URLByAppendingPathComponent(Playground.contentsSwift)
-                    .resourceValuesForKeys(properties),
-                    let creationDate = info[NSURLCreationDateKey] as? NSDate,
+                if let creationDate = try $0.resourceValuesForKeys(keys)[NSURLCreationDateKey] as? NSDate,
+                    let info = try? $0.URLByAppendingPathComponent(Playground.contentsSwift)
+                    .resourceValuesForKeys(keys),
                     let modificationDate = info[NSURLContentModificationDateKey] as? NSDate {
                         return modificationDate.timeIntervalSinceDate(creationDate) < Playground.regardedUnusedTimeInterval
                 } else {
