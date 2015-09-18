@@ -45,7 +45,7 @@ struct Playground {
     }
     
     var pagesURL: NSURL {
-        return baseURL.URLByAppendingPathComponent(Playground.pagesPathExtension, isDirectory: true)
+        return baseURL.URLByAppendingPathComponent(Playground.pagesPath, isDirectory: true)
     }
     
     var pageURL: NSURL {
@@ -203,7 +203,7 @@ extension Playground {
     // constants
     static let pathExtension = "playground"
     static let contentsXcplayground = "contents.xcplayground"
-    static let pagesPathExtension = "Pages"
+    static let pagesPath = "Pages"
     static let pagePathExtension = "xcplaygroundpage"
     static let contentsSwift = "Contents.swift"
     static let regardedUnusedTimeInterval: NSTimeInterval = 2.0
