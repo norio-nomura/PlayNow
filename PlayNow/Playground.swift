@@ -107,8 +107,7 @@ struct Playground {
         }
         
         // remove unused pages
-        // TODO: fix compiler warning after release of Swift 2.0
-        try? unusedPageURLs.forEach(fm.removeItemAtURL)
+        do { try unusedPageURLs.forEach(fm.removeItemAtURL) } catch {}
         
         // update contents.xcplayground if "/playground/pages" exists
         if let pagesNode = try playgroundNode.nodesForXPath("./pages").first as? NSXMLElement {
