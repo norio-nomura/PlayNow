@@ -12,14 +12,12 @@ PlayNow.app is inspired by [PlayNow](https://github.com/apalancat/PlayNow)
 
 ## Requirements
 - OS X 10.10.5 or later
-- Xcode 7 beta 6 or later
+- Xcode 7 or later
 
 ## Installation
-~~1. Download [PlayNow-0.2.zip](http://github.com/norio-nomura/PlayNow/releases/download/0.2/PlayNow-0.2.zip) (2015/09/07 updated)~~
-~~2. Unzip it~~
-~~3. Move `PlayNow.app` to `/Applications` folder~~
-
-1. Please clone this repo and build it by yourself.
+1. Download [PlayNow-0.2.1.zip](http://github.com/norio-nomura/PlayNow/releases/download/0.2.1/PlayNow-0.2.1.zip) (2015/09/25 updated)
+2. Unzip it
+3. Move `PlayNow.app` to `/Applications` folder
 
 ## Usage
 Launch `PlayNow.app`
@@ -49,4 +47,4 @@ Norio Nomura
 
 ## License
 
-PlayNow.app is available under the MIT license. See the LICENSE file for more info.
+PlayNow.app is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
