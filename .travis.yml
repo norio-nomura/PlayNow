@@ -24,6 +24,7 @@ deploy:
   file: PlayNow-$TRAVIS_TAG.zip
   on:
     tags: true
+  skip_cleanup: true
 after_deploy:
 - export/remove-keychain.sh
 notifications:
