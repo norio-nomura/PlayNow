@@ -16,6 +16,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C4AB3841BB4DDF3000B6488 /* options.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = options.plist; sourceTree = "<group>"; };
+		6C4AB3861BB4F9AF000B6488 /* remove-keychain.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "remove-keychain.sh"; sourceTree = "<group>"; };
+		6C4AB3871BB4F9AF000B6488 /* add-keychain.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "add-keychain.sh"; sourceTree = "<group>"; };
+		6C4AB3881BB4F9AF000B6488 /* DeveloperID.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = DeveloperID.p12; sourceTree = "<group>"; };
 		6C690A431B9AA23B00BB3313 /* PlayNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C690A461B9AA23B00BB3313 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6C690A481B9AA23B00BB3313 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -39,11 +43,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C4AB3831BB4DDDB000B6488 /* export */ = {
+			isa = PBXGroup;
+			children = (
+				6C4AB3871BB4F9AF000B6488 /* add-keychain.sh */,
+				6C4AB3881BB4F9AF000B6488 /* DeveloperID.p12 */,
+				6C4AB3841BB4DDF3000B6488 /* options.plist */,
+				6C4AB3861BB4F9AF000B6488 /* remove-keychain.sh */,
+			);
+			path = export;
+			sourceTree = "<group>";
+		};
 		6C690A3A1B9AA23B00BB3313 = {
 			isa = PBXGroup;
 			children = (
 				6C690A531B9AA27200BB3313 /* README.md */,
 				6C690A541B9AA27200BB3313 /* LICENSE */,
+				6C4AB3831BB4DDDB000B6488 /* export */,
 				6C690A451B9AA23B00BB3313 /* PlayNow */,
 				6C690A441B9AA23B00BB3313 /* Products */,
 			);
