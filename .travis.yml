@@ -1,7 +1,9 @@
 language: objective-c
 osx_image: xcode7
+install:
+- bundle install --path=vendor/bundle --binstubs=vendor/bin
 script:
-- xcodebuild -project PlayNow.xcodeproj -scheme PlayNow archive -archivePath PlayNow.xcarchive
+- xcodebuild -project PlayNow.xcodeproj -scheme PlayNow archive -archivePath PlayNow.xcarchive|bundle exec xcpretty
 branches:
   only:
   - master
@@ -13,7 +15,7 @@ env:
   - secure: l5y5s9q1luCvCAgpo32LFzf7IeBmUloI3JQJO4cONzwq+L0Yms9mf3F3x5REuIYOW/Q5E049JIHD3ZzsSsA0md/h+LokSCofmUYR4sZQHLiJaVzYh/vz5232RzrcuZUVMR32xcMU9hzZcgrqwgzN8w8YNA/CS5JXYTFko37F8Tf8CvVBcp1JKLlZB8dpvyBodrY9Xwr7I4Li/EDhqYkdbjOP8LSeo16o1ad88bkCxZNbNefmc2WpuXE0bw+yRL+OBjWz2o0BB53Lbpcv4dgLuJcaCI0rD/TT+G1moKAgpkSxyFuAast7pfngMvy+2FzxX5Nofk9NCQWaAaUb+sfYP/d7T1XJ1vppORqK93RTz3VsptuPvptQgWHgJKqy7HpBNNK5Rn9Nt2VQZ7EDWmF/gMIv6VoMI5HWcKoXpM7H/lmmIpflrNH7tsijSs9wW80kjSS/PSHF9rWUACsj7U6mtdbskwEvmIklCV7zXoVEO5DjYzpxn2WQWCVP4RHezl+rWiciCWgttkkEY+MnWFdRoTj8ea+umKSHwT/pcoqBLgpxWJqIn2wLKWBXp/ToUntBj3+Lq9lpHMm8HOQ39MBuGMvevBbI5R2lwX2eNWlLR8aJQSvTu77gWGje8CCNBAv8O0YrxlqeTXaAQKuR72VKLCemrOMSpKyYFHw1800V+JQ=
 before_deploy:
 - export/add-key.sh
-- xcodebuild -exportArchive -archivePath PlayNow.xcarchive -exportPath . -exportOptionsPlist export/options.plist
+- xcodebuild -exportArchive -archivePath PlayNow.xcarchive -exportPath . -exportOptionsPlist export/options.plist|bundle exec xcpretty
 - zip -r --symlinks PlayNow-$TRAVIS_TAG.zip PlayNow.app
 deploy:
   provider: releases
