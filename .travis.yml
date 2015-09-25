@@ -1,5 +1,7 @@
 language: objective-c
 osx_image: xcode7
+before_install:
+- sudo systemsetup -settimezone Asia/Tokyo
 install:
 - bundle install --path=vendor/bundle --binstubs=vendor/bin
 script:
