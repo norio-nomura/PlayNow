@@ -1,0 +1,29 @@
+language: objective-c
+osx_image: xcode7
+script:
+- xcodebuild -project PlayNow.xcodeproj -scheme PlayNow archive -archivePath PlayNow.xcarchive
+branches:
+  only:
+  - master
+  - "/^v\\d+\\.\\d+\\(.\\d+)?$/"
+env:
+  global:
+  - LANG=en_US.UTF-8
+  - LC_ALL=en_US.UTF-8
+  - secure: l5y5s9q1luCvCAgpo32LFzf7IeBmUloI3JQJO4cONzwq+L0Yms9mf3F3x5REuIYOW/Q5E049JIHD3ZzsSsA0md/h+LokSCofmUYR4sZQHLiJaVzYh/vz5232RzrcuZUVMR32xcMU9hzZcgrqwgzN8w8YNA/CS5JXYTFko37F8Tf8CvVBcp1JKLlZB8dpvyBodrY9Xwr7I4Li/EDhqYkdbjOP8LSeo16o1ad88bkCxZNbNefmc2WpuXE0bw+yRL+OBjWz2o0BB53Lbpcv4dgLuJcaCI0rD/TT+G1moKAgpkSxyFuAast7pfngMvy+2FzxX5Nofk9NCQWaAaUb+sfYP/d7T1XJ1vppORqK93RTz3VsptuPvptQgWHgJKqy7HpBNNK5Rn9Nt2VQZ7EDWmF/gMIv6VoMI5HWcKoXpM7H/lmmIpflrNH7tsijSs9wW80kjSS/PSHF9rWUACsj7U6mtdbskwEvmIklCV7zXoVEO5DjYzpxn2WQWCVP4RHezl+rWiciCWgttkkEY+MnWFdRoTj8ea+umKSHwT/pcoqBLgpxWJqIn2wLKWBXp/ToUntBj3+Lq9lpHMm8HOQ39MBuGMvevBbI5R2lwX2eNWlLR8aJQSvTu77gWGje8CCNBAv8O0YrxlqeTXaAQKuR72VKLCemrOMSpKyYFHw1800V+JQ=
+before_deploy:
+- export/add-key.sh
+- xcodebuild -exportArchive -archivePath PlayNow.xcarchive -exportPath . -exportOptionsPlist export/options.plist
+- zip -r --symlinks PlayNow-$TRAVIS_TAG.zip PlayNow.app
+deploy:
+  provider: releases
+  api_key:
+    secure: V5ewnaYWpBWfpCBlIZXFldvNgba39jcoMvJfbu3V4q1zG9/0EysAHH/jFqVoI2R7FPW8Jcuy1NLmm9z2YQo02160JSvwg/KTH6YV0lmHQdrt5+qSuCv9jOlBfIwWGSoGJT+up1pb5HpOo3+NqRKsBp8S0nfbUB+lWKYuVfRuNe2Li5e3rpU0iYa5g/pKGHBm6PDJZP7kSTphNnP4nHdXh21kYWE45RrxrM+whoLGwP3nbNlQy3KINj90WtzUI3f/s2S2kLkLdAzEcQKmQpENx9r9l+49aZRDGO48AYvzHKPziHLjD0m7nj9BZYhK7OXW4cHQycVW7o500mVG6yLbpuTSM4pSpW7CWc9VQd9FhRsx4H/G0D6zEVzR6Uw9mYtnzDL8RJ034ju9Q9BWUj4I/JBLOk30jL0cd8fUF9m2UxOLYR0ZG32MeQoXHMj+/WtWaEsyPtcA6bjaqDizinA20eMkR64qwFf1pJPn+Hk+e0cnXegPq3/r1NtzwZkURRaA2YaWOsTuTGtpgSpUKOoaWEWBkirCGd3E22XRzFtHldCyJcABEx2DZVHoJHQ3ckvUFEFDHluWIyvUWIvt6syjNs6iK9Ih+L2un69Bd3+h29Ak89TZnCRty6jdNsqOooYN704q8FHF7Eo/YRSTHLqgX/sEensddVXgCS89AeqIpzo=
+  file: PlayNow-$TRAVIS_TAG.zip
+  on:
+    tags: true
+after_deploy:
+- export/remove-key.sh
+notifications:
+  webhooks:
+    secure: RruAoNWvJR2K+4YhB6SCr7n52KjwxksJ2tW9DO/NgJ8KiunnBwWKmxocNHu7OiqHW8bRnGUmNfQYgBhA0jy5YzDWJCiklZLxXr/WIOvFBD5P5SIBuKdQYU1jnnFw+U1QPETLuQAqzLsCK+5Gw3QmZnF2NPvkMYpRmdwuIV2XSctSqi1Ulp6VZO0qxCbcTFHiXN2s3+pvlLQHuQitncEPbOp3UfUOEdSeroUcKk5B0J+OHYJjZqFjENlWV+CgK6kfRRvQpV0yS8RfQL9xCxOa7bJN4eu3s04dkjzrlYdyKNijWyyX/HE6VndSaLxiBH6nje1eCibO0yIiovP3UVRb2HXUFM8cJy/1MqtPNeeuz2xLXqHZOWAmtRBXHsBsISFRsB6LBoywtbbbsD0aavBRwUgX53ouDxt+E1WwpBJSKbkWjxewDK4EEdfMNPhOJY74N9elkpI2P5i3xr2cwq55T3h/D8wH8E5zYddbowPEXp0A+QiBRJVfIUp6axQHDV9zKJRT3odzUIwWVuEo7oivX8Ql2OX4y07EpGTErD07Pev58kC2OR+7dLrgMyQXHy9YZvPqgC175c1R85F2D79th1XorCvKMcgpp4g2gqSpzhb09pUwEhnnr0XPJHxFKWw1uqR84K3DbWR/TRCeW130ZQYw7haof4uGR1K6JSiHvdg=
