@@ -58,12 +58,11 @@ struct Playground {
     
     func update() throws -> Playground {
         // check existence of contents.xcplayground
-        let ws = NSWorkspace.sharedWorkspace()
         if contentsXcplaygroundURL.fileURLExists {
             try addPageToPlayground()
             
             // open playground.
-            let app = try ws.openURL(baseURL, options: .WithoutActivation, configuration: [:])
+            let app = try Playground.openURL(baseURL, andActivate: false)
             
             // wait until finishedLaunching if openURL() launching Xcode
             while !app.finishedLaunching {
@@ -73,13 +72,13 @@ struct Playground {
             sleep(Playground.waitSecondsBeforeOpeningPage) // wait 3+ seconds
             
             // open page in playground
-            try ws.openURL(pageURL, options: [], configuration: [:])
+            try Playground.openURL(pageURL)
             
         } else { // file does not exist
             try buildPlayground()
             
             // open playground.
-            ws.openURL(baseURL)
+            try Playground.openURL(baseURL)
         }
         return self
     }
@@ -199,6 +198,7 @@ extension Playground {
     static let pageNameDateFormat = defaults.stringForKey("pageNameDateFormat") ?? "HHmmss"
     static let makeUsedIfFromServices = defaults.objectForKey("makeUsedIfFromServices").flatMap { ($0 as? NSNumber)?.boolValue } ?? true
     static let waitSecondsBeforeOpeningPage = UInt32(max(defaults.integerForKey("waitSecondsBeforeOpeningPage"), 3))
+    static let XcodeURL = defaults.URLForKey("XcodePath")
     
     // constants
     static let pathExtension = "playground"
@@ -273,6 +273,20 @@ extension Playground {
             return playgroundURL
         } else {
             throw Error.CantBuildPlaygroundURL
+        }
+    }
+    
+    /// open URL respect `XcodePath` setting
+    /// - Parameter url: NSURL to open
+    /// - Parameter andActivate: Bool
+    /// - Returns: NSRunningApplication
+    static func openURL(url: NSURL, andActivate activate: Bool = true) throws -> NSRunningApplication {
+        let ws = NSWorkspace.sharedWorkspace()
+        let options = activate ? [] : NSWorkspaceLaunchOptions.WithoutActivation
+        if let xcodeURL = Playground.XcodeURL {
+            return try ws.openURLs([url], withApplicationAtURL: xcodeURL, options: options, configuration: [:])
+        } else {
+            return try ws.openURL(url, options: options, configuration: [:])
         }
     }
 }
