@@ -32,7 +32,7 @@ defaults write io.github.norio-nomura.PlayNow defaultDirectory /Users/norio/Docu
 ```
 
 key                           | default     | note
-------------------------------|-------------|---------------------------
+------------------------------|-------------|-------------------------------
 `defaultDirectory`            | `~/Desktop` |
 `targetPlatform`              | `osx`       | `osx` or `ios`
 `playgroundNamePrefix`        | `PlayNow-`  |
@@ -40,6 +40,7 @@ key                           | default     | note
 `pageNamePrefix`              |             |
 `pageNameDateFormat`          | `HHmmss`    |
 `makeUsedIfFromServices`      | `YES`       | add 3sec to modified time.
+`XcodePath`                   |             | e.g. `/Applications/Xcode.app`
 
 ## Author
 
