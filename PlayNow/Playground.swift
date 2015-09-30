@@ -28,9 +28,30 @@
 import Cocoa
 
 struct Playground {
-    enum Error: ErrorType {
+    enum Error: ErrorType, CustomStringConvertible {
         case CantBuildPlaygroundURL
-        case UnknownPlaygroundVersion
+        case VersionOfPlaygroundCanNotBeDetected(playgroundName: String)
+        case VersionOfPlaygroundIsNotSupported(version: String, playgroundName: String)
+        
+        var NSError: Foundation.NSError {
+            let domain = (self as Foundation.NSError).domain
+            let code = (self as Foundation.NSError).code
+            let userInfo = [ NSLocalizedDescriptionKey: description ]
+            return Foundation.NSError(domain: domain, code: code, userInfo: userInfo)
+        }
+        
+        var description: String {
+            switch self {
+            case CantBuildPlaygroundURL:
+                return "Can't build playground url."
+            case VersionOfPlaygroundCanNotBeDetected(let playgroundName):
+                return "PlayNow can not edit \"\(playgroundName)\"" +
+                " because the version of Playground can not be detected."
+            case VersionOfPlaygroundIsNotSupported(let version, let playgroundName):
+                return "PlayNow can not edit \"\(playgroundName)\"" +
+                " because the version \"\(version)\" of Playground  is not supported."
+            }
+        }
     }
     
     let baseURL: NSURL
@@ -88,9 +109,11 @@ struct Playground {
         // check version
         let contentsXcplayground = try NSXMLDocument(contentsOfURL: contentsXcplaygroundURL, options: NSXMLNodeOptionsNone)
         guard let playgroundNode = try contentsXcplayground.nodesForXPath("/playground").first as? NSXMLElement,
-            let version = playgroundNode.attributeForName("version")?.stringValue
-            where version == "6.0" else {
-                throw Playground.Error.UnknownPlaygroundVersion
+            let version = playgroundNode.attributeForName("version")?.stringValue else {
+                throw Error.VersionOfPlaygroundCanNotBeDetected(playgroundName: baseURL.lastPathComponent!)
+        }
+        if "6.0".compare(version, options:.NumericSearch) == .OrderedAscending {
+            throw Error.VersionOfPlaygroundIsNotSupported(version: version, playgroundName: baseURL.lastPathComponent!)
         }
         
         // save unused pages before adding page

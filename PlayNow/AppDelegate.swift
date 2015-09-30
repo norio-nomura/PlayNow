@@ -46,8 +46,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if !self.executed {
                 do {
                     try Playground(fileURL: self.url).update()
-                } catch {
+                } catch let error as Playground.Error {
                     NSLog("#PlayNow: \(error)")
+                    NSAlert(error: error.NSError).runModal()
+                } catch let error as NSError {
+                    NSLog("#PlayNow: \(error)")
+                    NSAlert(error: error).runModal()
                 }
             }
             NSApplication.sharedApplication().terminate(self)
@@ -62,8 +66,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         do {
             // When called from Services, avoid added Page regarding unused.
             try Playground(fileURL: url, contentsSwift: contents).update().checkMakeUsedIfFromServices()
-        } catch {
+        } catch let error as Playground.Error {
             NSLog("#PlayNow: \(error)")
+            NSAlert(error: error.NSError).runModal()
+        } catch let error as NSError {
+            NSLog("#PlayNow: \(error)")
+            NSAlert(error: error).runModal()
         }
         
         executed = true
