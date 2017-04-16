@@ -10,9 +10,9 @@
 		6C690A471B9AA23B00BB3313 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A461B9AA23B00BB3313 /* AppDelegate.swift */; };
 		6C690A491B9AA23B00BB3313 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C690A481B9AA23B00BB3313 /* Assets.xcassets */; };
 		6C690A4C1B9AA23B00BB3313 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C690A4A1B9AA23B00BB3313 /* MainMenu.xib */; };
-		6C690A561B9AA3DF00BB3313 /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A551B9AA3DF00BB3313 /* Playground.swift */; settings = {ASSET_TAGS = (); }; };
-		6C690A581B9AA42A00BB3313 /* NSDate+PlayNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A571B9AA42A00BB3313 /* NSDate+PlayNow.swift */; settings = {ASSET_TAGS = (); }; };
-		6C690A5A1B9AA44E00BB3313 /* NSURL+PlayNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A591B9AA44E00BB3313 /* NSURL+PlayNow.swift */; settings = {ASSET_TAGS = (); }; };
+		6C690A561B9AA3DF00BB3313 /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A551B9AA3DF00BB3313 /* Playground.swift */; };
+		6C690A581B9AA42A00BB3313 /* NSDate+PlayNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A571B9AA42A00BB3313 /* NSDate+PlayNow.swift */; };
+		6C690A5A1B9AA44E00BB3313 /* NSURL+PlayNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C690A591B9AA44E00BB3313 /* NSURL+PlayNow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,11 +113,12 @@
 		6C690A3B1B9AA23B00BB3313 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Norio Nomura";
 				TargetAttributes = {
 					6C690A421B9AA23B00BB3313 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -190,8 +191,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -234,8 +237,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -254,6 +259,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -266,6 +272,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.github.norio-nomura.PlayNow";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -278,6 +285,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.github.norio-nomura.PlayNow";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

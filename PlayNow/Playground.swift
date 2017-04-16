@@ -28,10 +28,10 @@
 import Cocoa
 
 struct Playground {
-    enum Error: ErrorType, CustomStringConvertible {
-        case CantBuildPlaygroundURL
-        case VersionOfPlaygroundCanNotBeDetected(playgroundName: String)
-        case VersionOfPlaygroundIsNotSupported(version: String, playgroundName: String)
+    enum Error: Swift.Error, CustomStringConvertible {
+        case cantBuildPlaygroundURL
+        case versionOfPlaygroundCanNotBeDetected(playgroundName: String)
+        case versionOfPlaygroundIsNotSupported(version: String, playgroundName: String)
         
         var NSError: Foundation.NSError {
             let domain = (self as Foundation.NSError).domain
@@ -42,41 +42,42 @@ struct Playground {
         
         var description: String {
             switch self {
-            case CantBuildPlaygroundURL:
+            case .cantBuildPlaygroundURL:
                 return "Can't build playground url."
-            case VersionOfPlaygroundCanNotBeDetected(let playgroundName):
+            case .versionOfPlaygroundCanNotBeDetected(let playgroundName):
                 return "PlayNow can not edit \"\(playgroundName)\"" +
                 " because the version of Playground can not be detected."
-            case VersionOfPlaygroundIsNotSupported(let version, let playgroundName):
+            case .versionOfPlaygroundIsNotSupported(let version, let playgroundName):
                 return "PlayNow can not edit \"\(playgroundName)\"" +
                 " because the version \"\(version)\" of Playground  is not supported."
             }
         }
     }
     
-    let baseURL: NSURL
-    let contentsSwiftData: NSData?
-    init(fileURL: NSURL?, contentsSwift: String? = nil) throws {
+    let baseURL: URL
+    let contentsSwiftData: Data?
+    init(fileURL: URL?, contentsSwift: String? = nil) throws {
         baseURL = try Playground.playgroundURL(fromURL: fileURL)
         contentsSwiftData = Playground.contentsSwiftData(contentsSwift)
     }
     
-    var contentsXcplaygroundURL: NSURL {
-        return baseURL.URLByAppendingPathComponent(Playground.contentsXcplayground)
+    var contentsXcplaygroundURL: URL {
+        return baseURL.appendingPathComponent(Playground.contentsXcplayground)
     }
     
-    var pagesURL: NSURL {
-        return baseURL.URLByAppendingPathComponent(Playground.pagesPath, isDirectory: true)
+    var pagesURL: URL {
+        return baseURL.appendingPathComponent(Playground.pagesPath, isDirectory: true)
     }
     
-    var pageURL: NSURL {
-        return pagesURL.URLByAppendingPathComponent(Playground.pagePathComponent, isDirectory: true)
+    var pageURL: URL {
+        return pagesURL.appendingPathComponent(Playground.pagePathComponent, isDirectory: true)
     }
     
-    var pageContentsSwiftURL: NSURL {
-        return pageURL.URLByAppendingPathComponent(Playground.contentsSwift)
+    var pageContentsSwiftURL: URL {
+        return pageURL.appendingPathComponent(Playground.contentsSwift)
     }
-    
+
+    @discardableResult
     func update() throws -> Playground {
         // check existence of contents.xcplayground
         if contentsXcplaygroundURL.fileURLExists {
@@ -86,8 +87,8 @@ struct Playground {
             let app = try Playground.openURL(baseURL, andActivate: false)
             
             // wait until finishedLaunching if openURL() launching Xcode
-            while !app.finishedLaunching {
-                NSRunLoop.currentRunLoop().runUntilDate(NSDate(timeIntervalSinceNow: 1))
+            while !app.isFinishedLaunching {
+                RunLoop.current.run(until: Date(timeIntervalSinceNow: 1))
             }
             // wait 3+ seconds for openURL() launching Xcode
             sleep(Playground.waitSecondsBeforeOpeningPage) // wait 3+ seconds
@@ -107,68 +108,70 @@ struct Playground {
     /// add page to existing Playground
     func addPageToPlayground() throws {
         // check version
-        let contentsXcplayground = try NSXMLDocument(contentsOfURL: contentsXcplaygroundURL, options: NSXMLNodeOptionsNone)
-        guard let playgroundNode = try contentsXcplayground.nodesForXPath("/playground").first as? NSXMLElement,
-            let version = playgroundNode.attributeForName("version")?.stringValue else {
-                throw Error.VersionOfPlaygroundCanNotBeDetected(playgroundName: baseURL.lastPathComponent!)
+        let contentsXcplayground = try XMLDocument(contentsOf: contentsXcplaygroundURL, options: 0)
+        guard let playgroundNode = try contentsXcplayground.nodes(forXPath: "/playground").first as? XMLElement,
+            let version = playgroundNode.attribute(forName: "version")?.stringValue else {
+                throw Error.versionOfPlaygroundCanNotBeDetected(playgroundName: baseURL.lastPathComponent)
         }
-        if "6.0".compare(version, options:.NumericSearch) == .OrderedAscending {
-            throw Error.VersionOfPlaygroundIsNotSupported(version: version, playgroundName: baseURL.lastPathComponent!)
+        if "6.0".compare(version, options:.numeric) == .orderedAscending {
+            throw Error.versionOfPlaygroundIsNotSupported(version: version, playgroundName: baseURL.lastPathComponent)
         }
         
         // save unused pages before adding page
         let unusedPageURLs = try unusedPages()
         
         // add page
-        let fm = NSFileManager.defaultManager()
-        try fm.createDirectoryAtURL(pageURL, withIntermediateDirectories: true, attributes: nil)
+        let fm = FileManager.default
+        try fm.createDirectory(at: pageURL, withIntermediateDirectories: true, attributes: nil)
         do {
-            try contentsSwiftData?.writeToURL(pageContentsSwiftURL, options: .DataWritingWithoutOverwriting)
-        } catch NSCocoaError.FileWriteFileExistsError {
+            try contentsSwiftData?.write(to: pageContentsSwiftURL, options: .withoutOverwriting)
+        } catch CocoaError.fileWriteFileExists {
             // ignore file exists error. It may happen by configuration of "pageNameDateFormat"
         }
         
         // remove unused pages
-        do { try unusedPageURLs.forEach(fm.removeItemAtURL) } catch {}
+        do { try unusedPageURLs.forEach(fm.removeItem(at:)) } catch {}
         
         // update contents.xcplayground if "/playground/pages" exists
-        if let pagesNode = try playgroundNode.nodesForXPath("./pages").first as? NSXMLElement {
+        if let pagesNode = try playgroundNode.nodes(forXPath: "./pages").first as? XMLElement {
             
-            func basenameFromURL(url: NSURL) -> String? {
-                return (url.lastPathComponent as NSString?)?.stringByDeletingPathExtension
+            func basenameFromURL(_ url: URL) -> String? {
+                return (url.lastPathComponent as NSString?)?.deletingPathExtension
             }
             
             // remove each unused page from pages node
             try unusedPageURLs.flatMap(basenameFromURL).forEach {
-                try pagesNode.nodesForXPath("./page[@name=\"\($0)\"]").forEach {
+                try pagesNode.nodes(forXPath: "./page[@name=\"\($0)\"]").forEach {
                     $0.detach()
                 }
             }
             
             // add page to pages node
-            let pageNode = try NSXMLElement(XMLString: "<page name=\"\(Playground.pageName)\"/>")
+            let pageNode = try XMLElement(xmlString: "<page name=\"\(Playground.pageName)\"/>")
             pagesNode.addChild(pageNode)
             
-            let data = contentsXcplayground.XMLDataWithOptions(NSXMLNodePrettyPrint)
-            try data.writeToURL(contentsXcplaygroundURL, options: .DataWritingAtomic)
+            let data = contentsXcplayground
+                .perform(#selector(XMLDocument.xmlData(withOptions:)), with: XMLNode.Options.nodePrettyPrint.rawValue)
+                .takeRetainedValue() as! Data
+            try data.write(to: contentsXcplaygroundURL, options: .atomic)
         }
     }
     
     /// Array of unused page's url.
     /// If between creation and modification is less than 2 seconds, it is regarded unused.
-    func unusedPages() throws -> [NSURL] {
-        let fm = NSFileManager.defaultManager()
-        let keys = [NSURLCreationDateKey, NSURLContentModificationDateKey]
-        let urls = try fm.contentsOfDirectoryAtURL(pagesURL,
+    func unusedPages() throws -> [URL] {
+        let fm = FileManager.default
+        let keys = [URLResourceKey.creationDateKey, URLResourceKey.contentModificationDateKey]
+        let urls = try fm.contentsOfDirectory(at: pagesURL,
             includingPropertiesForKeys: keys,
-            options: [.SkipsSubdirectoryDescendants, .SkipsHiddenFiles])
+            options: [.skipsSubdirectoryDescendants, .skipsHiddenFiles])
             .filter { $0.pathExtension == Playground.pagePathExtension }
             .filter {
-                if let creationDate = try $0.resourceValuesForKeys(keys)[NSURLCreationDateKey] as? NSDate,
-                    let info = try? $0.URLByAppendingPathComponent(Playground.contentsSwift)
-                    .resourceValuesForKeys(keys),
-                    let modificationDate = info[NSURLContentModificationDateKey] as? NSDate {
-                        return modificationDate.timeIntervalSinceDate(creationDate) < Playground.regardedUnusedTimeInterval
+                if let creationDate = try ($0 as NSURL).resourceValues(forKeys: keys)[URLResourceKey.creationDateKey] as? Date,
+                    let info = try? ($0.appendingPathComponent(Playground.contentsSwift) as NSURL)
+                    .resourceValues(forKeys: keys),
+                    let modificationDate = info[URLResourceKey.contentModificationDateKey] as? Date {
+                        return modificationDate.timeIntervalSince(creationDate) < Playground.regardedUnusedTimeInterval
                 } else {
                     return false
                 }
@@ -181,47 +184,49 @@ struct Playground {
     /// Create new Playground
     func buildPlayground() throws {
         // create package
-        let fm = NSFileManager.defaultManager()
-        try fm.createDirectoryAtURL(baseURL, withIntermediateDirectories: true, attributes: nil)
+        let fm = FileManager.default
+        try fm.createDirectory(at: baseURL, withIntermediateDirectories: true, attributes: nil)
         
         // create contents.xcplayground
-        let contentsXcplayground = try NSXMLDocument(XMLString: Playground.contentsXcplaygroundXMLString, options: NSXMLDocumentTidyXML)
-        if let playgroundNode = try contentsXcplayground.nodesForXPath("/playground").first as? NSXMLElement {
-            let pagesNode = try NSXMLElement(XMLString: "<pages><page name=\"\(Playground.pageName)\"/></pages>")
+        let contentsXcplayground = try XMLDocument(xmlString: Playground.contentsXcplaygroundXMLString, options: Int(XMLNode.Options.documentTidyXML.rawValue))
+        if let playgroundNode = try contentsXcplayground.nodes(forXPath: "/playground").first as? XMLElement {
+            let pagesNode = try XMLElement(xmlString: "<pages><page name=\"\(Playground.pageName)\"/></pages>")
             playgroundNode.addChild(pagesNode)
         }
-        let data = contentsXcplayground.XMLDataWithOptions(NSXMLNodePrettyPrint)
-        try data.writeToURL(contentsXcplaygroundURL, options: .DataWritingWithoutOverwriting)
+        let data = contentsXcplayground
+            .perform(#selector(XMLDocument.xmlData(withOptions:)), with: XMLNode.Options.nodePrettyPrint.rawValue)
+            .takeRetainedValue() as! Data
+        try data.write(to: contentsXcplaygroundURL, options: .withoutOverwriting)
         
         // add page
-        try fm.createDirectoryAtURL(pageURL, withIntermediateDirectories: true, attributes: nil)
-        try contentsSwiftData?.writeToURL(pageContentsSwiftURL, options: .DataWritingWithoutOverwriting)
+        try fm.createDirectory(at: pageURL, withIntermediateDirectories: true, attributes: nil)
+        try contentsSwiftData?.write(to: pageContentsSwiftURL, options: .withoutOverwriting)
     }
     
     /// Avoid added Page regarding unused.
     func checkMakeUsedIfFromServices() throws {
         if Playground.makeUsedIfFromServices,
-            let modificationDate = try pageContentsSwiftURL.resourceValuesForKeys([NSURLContentModificationDateKey])[NSURLContentModificationDateKey] as? NSDate {
-            let touchedDate = modificationDate.dateByAddingTimeInterval(Playground.regardedUnusedTimeInterval + 1)
-            try pageContentsSwiftURL.setResourceValue(touchedDate, forKey: NSURLContentModificationDateKey)
+            let modificationDate = try (pageContentsSwiftURL as NSURL).resourceValues(forKeys: [URLResourceKey.contentModificationDateKey])[URLResourceKey.contentModificationDateKey] as? Date {
+            let touchedDate = modificationDate.addingTimeInterval(Playground.regardedUnusedTimeInterval + 1)
+            try (pageContentsSwiftURL as NSURL).setResourceValue(touchedDate, forKey: URLResourceKey.contentModificationDateKey)
         }
     }
 }
 
 extension Playground {
     // customizable
-    static let defaultURL = defaults.URLForKey("defaultDirectory")
-    static let targetPlatform = defaults.stringForKey("targetPlatform") ?? "osx"
-    static let contentsSwiftDefault =  defaults.stringForKey("contentsSwiftString") ?? "var str = \"Hello, playground\""
+    static let defaultURL = defaults.url(forKey: "defaultDirectory")
+    static let targetPlatform = defaults.string(forKey: "targetPlatform") ?? "osx"
+    static let contentsSwiftDefault =  defaults.string(forKey: "contentsSwiftString") ?? "var str = \"Hello, playground\""
     
-    static let playgroundNamePrefix = defaults.stringForKey("playgroundNamePrefix") ?? "PlayNow-"
-    static let playgroundNameDateFormat = defaults.stringForKey("playgroundNamePrefix") ?? "yyyyMMdd"
+    static let playgroundNamePrefix = defaults.string(forKey: "playgroundNamePrefix") ?? "PlayNow-"
+    static let playgroundNameDateFormat = defaults.string(forKey: "playgroundNamePrefix") ?? "yyyyMMdd"
     // Restriction of Page name is tighter than filename.
-    static let pageNamePrefix = defaults.stringForKey("pageNamePrefix") ?? ""
-    static let pageNameDateFormat = defaults.stringForKey("pageNameDateFormat") ?? "HHmmss"
-    static let makeUsedIfFromServices = defaults.objectForKey("makeUsedIfFromServices").flatMap { ($0 as? NSNumber)?.boolValue } ?? true
-    static let waitSecondsBeforeOpeningPage = UInt32(max(defaults.integerForKey("waitSecondsBeforeOpeningPage"), 3))
-    static let XcodeURL = defaults.URLForKey("XcodePath")
+    static let pageNamePrefix = defaults.string(forKey: "pageNamePrefix") ?? ""
+    static let pageNameDateFormat = defaults.string(forKey: "pageNameDateFormat") ?? "HHmmss"
+    static let makeUsedIfFromServices = defaults.object(forKey: "makeUsedIfFromServices").flatMap { ($0 as? NSNumber)?.boolValue } ?? true
+    static let waitSecondsBeforeOpeningPage = UInt32(max(defaults.integer(forKey: "waitSecondsBeforeOpeningPage"), 3))
+    static let XcodeURL = defaults.url(forKey: "XcodePath")
     
     // constants
     static let pathExtension = "playground"
@@ -229,34 +234,34 @@ extension Playground {
     static let pagesPath = "Pages"
     static let pagePathExtension = "xcplaygroundpage"
     static let contentsSwift = "Contents.swift"
-    static let regardedUnusedTimeInterval: NSTimeInterval = 2.0
+    static let regardedUnusedTimeInterval: TimeInterval = 2.0
     
     // template
     static let contentsXcplaygroundXMLString = [
         "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",
         "<playground version='6.0' target-platform='\(targetPlatform)' requires-full-environment='true'/>"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
     
-    static let defaults = NSUserDefaults.standardUserDefaults()
-    static let now = NSDate()
+    static let defaults = UserDefaults.standard
+    static let now = Date()
     
     static let playgroundName = playgroundNamePrefix + now.stringWithFormat(playgroundNameDateFormat)
-    static let playgroundPathComponent = [playgroundName, Playground.pathExtension].joinWithSeparator(".")
+    static let playgroundPathComponent = [playgroundName, Playground.pathExtension].joined(separator: ".")
     static let pageName = Playground.sanitizePageName(pageNamePrefix + now.stringWithFormat(pageNameDateFormat))
-    static let pagePathComponent = [pageName, Playground.pagePathExtension].joinWithSeparator(".")
+    static let pagePathComponent = [pageName, Playground.pagePathExtension].joined(separator: ".")
     
     /// Replace some characters with "_".
     /// Restriction of Page name is tighter than filename.
-    static func sanitizePageName(name: String) -> String {
+    static func sanitizePageName(_ name: String) -> String {
         let regex = try! NSRegularExpression(pattern: "[\\\\:/]", options: [])
         let range = NSMakeRange(0, (name as NSString).length)
-        return regex.stringByReplacingMatchesInString(name, options: [], range: range, withTemplate: "_")
+        return regex.stringByReplacingMatches(in: name, options: [], range: range, withTemplate: "_")
     }
     
     /// Contents will `contents` parameter, defaults of "contentsSwiftString" or coded default.
     /// - Parameter contents: String?
     /// - Returns: NSData from contents adding header and footer
-    static func contentsSwiftData(contents: String?) -> NSData? {
+    static func contentsSwiftData(_ contents: String?) -> Data? {
         return [
             "//: [Previous](@previous)",
             "",
@@ -265,27 +270,27 @@ extension Playground {
             contents ?? contentsSwiftDefault,
             "",
             "//: [Next](@next)"
-            ].joinWithSeparator("\n").dataUsingEncoding(NSUTF8StringEncoding)
+            ].joined(separator: "\n").data(using: String.Encoding.utf8)
     }
     
     /// decide using which Playground and return it
     /// - Parameter fromURL: NSURL?
     /// - Returns: NSURL of Playground
-    static func playgroundURL(fromURL url: NSURL?) throws -> NSURL {
-        func isPlaygroundURL(url: NSURL) -> Bool {
+    static func playgroundURL(fromURL url: URL?) throws -> URL {
+        func isPlaygroundURL(_ url: URL) -> Bool {
             return url.pathExtension == Playground.pathExtension
         }
         
-        func appendPlaygroundPathComponentToURL(url: NSURL) -> NSURL? {
-            return url.URLByAppendingPathComponent(playgroundPathComponent, isDirectory: true)
+        func appendPlaygroundPathComponentToURL(_ url: URL) -> URL? {
+            return url.appendingPathComponent(playgroundPathComponent, isDirectory: true)
         }
         
-        func playgroundURLFromURL(url: NSURL) -> NSURL? {
+        func playgroundURLFromURL(_ url: URL) -> URL? {
             return isPlaygroundURL(url) ? url : appendPlaygroundPathComponentToURL(url)
         }
         
-        var desktopURL: NSURL? {
-            return NSFileManager.defaultManager().URLsForDirectory(.DesktopDirectory, inDomains: .UserDomainMask).first
+        var desktopURL: URL? {
+            return FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
         }
         
         if let playgroundURL = url.flatMap(playgroundURLFromURL) {
@@ -295,7 +300,7 @@ extension Playground {
         } else if let playgroundURL = desktopURL.flatMap(appendPlaygroundPathComponentToURL) {
             return playgroundURL
         } else {
-            throw Error.CantBuildPlaygroundURL
+            throw Error.cantBuildPlaygroundURL
         }
     }
     
@@ -303,13 +308,14 @@ extension Playground {
     /// - Parameter url: NSURL to open
     /// - Parameter andActivate: Bool
     /// - Returns: NSRunningApplication
-    static func openURL(url: NSURL, andActivate activate: Bool = true) throws -> NSRunningApplication {
-        let ws = NSWorkspace.sharedWorkspace()
-        let options = activate ? [] : NSWorkspaceLaunchOptions.WithoutActivation
+    @discardableResult
+    static func openURL(_ url: URL, andActivate activate: Bool = true) throws -> NSRunningApplication {
+        let ws = NSWorkspace.shared()
+        let options = activate ? [] : NSWorkspaceLaunchOptions.withoutActivation
         if let xcodeURL = Playground.XcodeURL {
-            return try ws.openURLs([url], withApplicationAtURL: xcodeURL, options: options, configuration: [:])
+            return try ws.open([url], withApplicationAt: xcodeURL, options: options, configuration: [:])
         } else {
-            return try ws.openURL(url, options: options, configuration: [:])
+            return try ws.open(url, options: options, configuration: [:])
         }
     }
 }

@@ -27,10 +27,10 @@
 
 import Foundation
 
-extension NSURL {
+extension URL {
     /// A boolean value that determines whether the receiver is a file URL and exists.
     @available(OSX 10.10, *)
     var fileURLExists: Bool {
-        return fileURL && path.map(NSFileManager.defaultManager().fileExistsAtPath) ?? false
+        return isFileURL && FileManager.default.fileExists(atPath: path)
     }
 }
