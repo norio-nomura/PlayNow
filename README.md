@@ -12,10 +12,10 @@ PlayNow.app is inspired by [PlayNow](https://github.com/apalancat/PlayNow)
 
 ## Requirements
 - OS X 10.10.5 or later
-- Xcode 7 or later
+- Xcode 8.3 or later
 
 ## Installation
-1. Download [PlayNow-0.2.2.zip](http://github.com/norio-nomura/PlayNow/releases/download/0.2.2/PlayNow-0.2.2.zip) (2015/09/30 updated)
+1. Download [PlayNow-0.2.2.zip](http://github.com/norio-nomura/PlayNow/releases/download/0.2.3/PlayNow-0.2.3.zip) (2017/04/16 updated)
 2. Unzip it
 3. Move `PlayNow.app` to `/Applications` folder
 
@@ -31,16 +31,16 @@ Change location of Playground:
 defaults write io.github.norio-nomura.PlayNow defaultDirectory /Users/norio/Documents
 ```
 
-key                           | default     | note
-------------------------------|-------------|-------------------------------
-`defaultDirectory`            | `~/Desktop` |
-`targetPlatform`              | `osx`       | `osx` or `ios`
-`playgroundNamePrefix`        | `PlayNow-`  |
-`playgroundNameDateFormat`    | `yyyyMMdd`  |
-`pageNamePrefix`              |             |
-`pageNameDateFormat`          | `HHmmss`    |
-`makeUsedIfFromServices`      | `YES`       | add 3sec to modified time.
-`XcodePath`                   |             | e.g. `/Applications/Xcode.app`
+key                           | default           | note
+------------------------------|-------------------|-------------------------------
+`defaultDirectory`            | `~/Desktop`       |
+`targetPlatform`              | `osx`             | `osx` or `ios`
+`playgroundNamePrefix`        | `PlayNow-`        |
+`playgroundNameDateFormat`    | `yyyyMMdd`        |
+`pageNamePrefix`              |                   |
+`pageNameDateFormat`          | `yyyyMMdd-HHmmss` |
+`makeUsedIfFromServices`      | `YES`             | add 3sec to modified time.
+`XcodePath`                   |                   | e.g. `/Applications/Xcode.app`
 
 ## Author
 
