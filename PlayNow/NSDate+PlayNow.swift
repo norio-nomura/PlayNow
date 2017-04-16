@@ -27,14 +27,14 @@
 
 import Foundation
 
-extension NSDate {
+extension Date {
     /// format NSDate with format string in en_US_POSIX locale
     /// - Parameter format: String for using dateFormat of NSDateFormatter()
     /// - Returns: String
-    func stringWithFormat(format: String) -> String {
-        let formatter = NSDateFormatter()
-        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+    func stringWithFormat(_ format: String) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = format
-        return formatter.stringFromDate(self)
+        return formatter.string(from: self)
     }
 }

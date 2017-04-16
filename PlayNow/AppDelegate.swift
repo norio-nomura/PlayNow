@@ -32,16 +32,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
 
-    let url = Process.arguments.dropFirst().first.map { NSURL(fileURLWithPath: $0) }
+    let url = CommandLine.arguments.dropFirst().first.map { URL(fileURLWithPath: $0) }
     var executed = false
 
-    func applicationDidFinishLaunching(notification: NSNotification) {
+    func applicationDidFinishLaunching(_ notification: Notification) {
         // Document said "Service requests can arrive immediately after you register the object."
         // But it does not as I tested.
-        NSApplication.sharedApplication().servicesProvider = self
+        NSApplication.shared().servicesProvider = self
         
         // So, 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, numericCast(NSEC_PER_SEC)), dispatch_get_main_queue()) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(NSEC_PER_SEC) / Double(NSEC_PER_SEC)) {
             [unowned self] in
             if !self.executed {
                 do {
@@ -54,14 +54,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     NSAlert(error: error).runModal()
                 }
             }
-            NSApplication.sharedApplication().terminate(self)
+            NSApplication.shared().terminate(self)
         }
     }
 
     /// Service Provider handler
     /// - SeeAlso: [Services Implementation Guide](https://developer.apple.com/library/prerelease/mac/documentation/Cocoa/Conceptual/SysServices/introduction.html)
-    func executeInPlayground(pasteboard: NSPasteboard, userData: String, error: AutoreleasingUnsafeMutablePointer<NSString?>) {
-        let contents = pasteboard.stringForType(NSPasteboardTypeString)
+    func executeInPlayground(_ pasteboard: NSPasteboard, userData: String, error: AutoreleasingUnsafeMutablePointer<NSString?>) {
+        let contents = pasteboard.string(forType: NSPasteboardTypeString)
         
         do {
             // When called from Services, avoid added Page regarding unused.
