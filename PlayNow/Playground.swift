@@ -223,7 +223,7 @@ extension Playground {
     static let playgroundNameDateFormat = defaults.string(forKey: "playgroundNamePrefix") ?? "yyyyMMdd"
     // Restriction of Page name is tighter than filename.
     static let pageNamePrefix = defaults.string(forKey: "pageNamePrefix") ?? ""
-    static let pageNameDateFormat = defaults.string(forKey: "pageNameDateFormat") ?? "HHmmss"
+    static let pageNameDateFormat = defaults.string(forKey: "pageNameDateFormat") ?? "yyyyMMdd-HHmmss"
     static let makeUsedIfFromServices = defaults.object(forKey: "makeUsedIfFromServices").flatMap { ($0 as? NSNumber)?.boolValue } ?? true
     static let waitSecondsBeforeOpeningPage = UInt32(max(defaults.integer(forKey: "waitSecondsBeforeOpeningPage"), 3))
     static let XcodeURL = defaults.url(forKey: "XcodePath")
