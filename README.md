@@ -11,11 +11,11 @@ PlayNow.app is inspired by [PlayNow](https://github.com/apalancat/PlayNow)
 - Add "Execute in Playground" menu item on Services menu
 
 ## Requirements
-- OS X 10.10.5 or later
+- macOS 10.12 or later
 - Xcode 8.3 or later
 
 ## Installation
-1. Download [PlayNow-0.2.2.zip](http://github.com/norio-nomura/PlayNow/releases/download/0.2.3/PlayNow-0.2.3.zip) (2017/04/16 updated)
+1. Download [PlayNow-0.2.3.zip](http://github.com/norio-nomura/PlayNow/releases/download/0.2.3/PlayNow-0.2.3.zip) (2017/04/16 updated)
 2. Unzip it
 3. Move `PlayNow.app` to `/Applications` folder
 
