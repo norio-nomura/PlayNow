@@ -150,9 +150,7 @@ struct Playground {
             let pageNode = try XMLElement(xmlString: "<page name=\"\(Playground.pageName)\"/>")
             pagesNode.addChild(pageNode)
             
-            let data = contentsXcplayground
-                .perform(#selector(XMLDocument.xmlData(withOptions:)), with: XMLNode.Options.nodePrettyPrint.rawValue)
-                .takeRetainedValue() as! Data
+            let data = contentsXcplayground.xmlData(withOptions: Int(XMLNode.Options.nodePrettyPrint.rawValue))
             try data.write(to: contentsXcplaygroundURL, options: .atomic)
         }
     }
@@ -193,9 +191,7 @@ struct Playground {
             let pagesNode = try XMLElement(xmlString: "<pages><page name=\"\(Playground.pageName)\"/></pages>")
             playgroundNode.addChild(pagesNode)
         }
-        let data = contentsXcplayground
-            .perform(#selector(XMLDocument.xmlData(withOptions:)), with: XMLNode.Options.nodePrettyPrint.rawValue)
-            .takeRetainedValue() as! Data
+        let data = contentsXcplayground.xmlData(withOptions: Int(XMLNode.Options.nodePrettyPrint.rawValue))
         try data.write(to: contentsXcplaygroundURL, options: .withoutOverwriting)
         
         // add page
