@@ -108,7 +108,7 @@ struct Playground {
     /// add page to existing Playground
     func addPageToPlayground() throws {
         // check version
-        let contentsXcplayground = try XMLDocument(contentsOf: contentsXcplaygroundURL, options: 0)
+        let contentsXcplayground = try XMLDocument(contentsOf: contentsXcplaygroundURL)
         guard let playgroundNode = try contentsXcplayground.nodes(forXPath: "/playground").first as? XMLElement,
             let version = playgroundNode.attribute(forName: "version")?.stringValue else {
                 throw Error.versionOfPlaygroundCanNotBeDetected(playgroundName: baseURL.lastPathComponent)
@@ -150,7 +150,7 @@ struct Playground {
             let pageNode = try XMLElement(xmlString: "<page name=\"\(Playground.pageName)\"/>")
             pagesNode.addChild(pageNode)
             
-            let data = contentsXcplayground.xmlData(withOptions: Int(XMLNode.Options.nodePrettyPrint.rawValue))
+            let data = contentsXcplayground.xmlData(options: .nodePrettyPrint)
             try data.write(to: contentsXcplaygroundURL, options: .atomic)
         }
     }
@@ -186,12 +186,12 @@ struct Playground {
         try fm.createDirectory(at: baseURL, withIntermediateDirectories: true, attributes: nil)
         
         // create contents.xcplayground
-        let contentsXcplayground = try XMLDocument(xmlString: Playground.contentsXcplaygroundXMLString, options: Int(XMLNode.Options.documentTidyXML.rawValue))
+        let contentsXcplayground = try XMLDocument(xmlString: Playground.contentsXcplaygroundXMLString, options: .documentTidyXML)
         if let playgroundNode = try contentsXcplayground.nodes(forXPath: "/playground").first as? XMLElement {
             let pagesNode = try XMLElement(xmlString: "<pages><page name=\"\(Playground.pageName)\"/></pages>")
             playgroundNode.addChild(pagesNode)
         }
-        let data = contentsXcplayground.xmlData(withOptions: Int(XMLNode.Options.nodePrettyPrint.rawValue))
+        let data = contentsXcplayground.xmlData(options: .nodePrettyPrint)
         try data.write(to: contentsXcplaygroundURL, options: .withoutOverwriting)
         
         // add page
@@ -306,8 +306,8 @@ extension Playground {
     /// - Returns: NSRunningApplication
     @discardableResult
     static func openURL(_ url: URL, andActivate activate: Bool = true) throws -> NSRunningApplication {
-        let ws = NSWorkspace.shared()
-        let options = activate ? [] : NSWorkspaceLaunchOptions.withoutActivation
+        let ws = NSWorkspace.shared
+        let options = activate ? [] : NSWorkspace.LaunchOptions.withoutActivation
         if let xcodeURL = Playground.XcodeURL {
             return try ws.open([url], withApplicationAt: xcodeURL, options: options, configuration: [:])
         } else {
