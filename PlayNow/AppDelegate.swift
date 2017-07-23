@@ -38,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Document said "Service requests can arrive immediately after you register the object."
         // But it does not as I tested.
-        NSApplication.shared().servicesProvider = self
+        NSApplication.shared.servicesProvider = self
         
         // So, 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(NSEC_PER_SEC) / Double(NSEC_PER_SEC)) {
@@ -54,14 +54,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     NSAlert(error: error).runModal()
                 }
             }
-            NSApplication.shared().terminate(self)
+            NSApplication.shared.terminate(self)
         }
     }
 
     /// Service Provider handler
     /// - SeeAlso: [Services Implementation Guide](https://developer.apple.com/library/prerelease/mac/documentation/Cocoa/Conceptual/SysServices/introduction.html)
     func executeInPlayground(_ pasteboard: NSPasteboard, userData: String, error: AutoreleasingUnsafeMutablePointer<NSString?>) {
-        let contents = pasteboard.string(forType: NSPasteboardTypeString)
+        let contents = pasteboard.string(forType: .string)
         
         do {
             // When called from Services, avoid added Page regarding unused.
